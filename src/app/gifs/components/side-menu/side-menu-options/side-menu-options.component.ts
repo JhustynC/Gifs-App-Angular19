@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { MenuOption } from 'src/app/gifs/interfaces/menu-option.interface';
 
-interface MenuOption {
-  label: string;
-  subLabel: string;
-  route: string;
-  icon: string;
-}
+
 
 @Component({
   selector: 'component-side-menu-options',
