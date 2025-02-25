@@ -1,10 +1,10 @@
 import { Component,  } from "@angular/core";
-import { DragDropComponent } from "../../components/element/draggable-element.component";
+import { CalendarComponent } from "../../components/calendar/calendar.component";
 
 @Component({
   selector: 'page-search-component',
   templateUrl: './search-page.component.html',
-  imports: [DragDropComponent],
+  imports: [CalendarComponent],
 })
 export default class SearchPageComponent {
 
