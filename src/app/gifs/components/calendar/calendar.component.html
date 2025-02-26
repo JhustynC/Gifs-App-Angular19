@@ -1,7 +1,7 @@
-<div class="flex items-center justify-center min-h-screen bg-gray-100">
-  <div class="w-full max-w-4xl p-6 bg-white rounded-lg shadow-md text-sm">
+<div class="flex items-center justify-center min-h-scree bg-white">
+  <div class="w-full max-w-4xl p-6 bg-blue-950 rounded-lg shadow-md text-sm">
     <!-- Componente del calendario -->
-    <div class="flex flex-wrap justify-center text-center">
+    <div class="flex flex-wrap justify-center text-center ">
       <div class="w-full md:w-1/3 mb-4">
         <div class="flex justify-center space-x-2">
           <button class="bg-blue-500 text-white px-2 py-1 rounded"
@@ -25,10 +25,12 @@
           </button>
         </div>
       </div>
-      <div class="w-full md:w-1/3 mb-4">
+
+      <!-- Central Date -->
+      <div class="w-full md:w-1/3 mb-4 text-white">
         <h3 class="text-base font-semibold">{{ viewDate() | calendarDate:(view() + 'ViewTitle'):'en' }}</h3>
       </div>
-      <div class="w-full md:w-1/3 mb-4">
+      <div class="w-full md:w-1/3 mb-4 ">
         <div class="flex justify-center space-x-2">
           <button class="bg-blue-500 text-white px-2 py-1 rounded"
                   (click)="setView(CalendarView.Month)"
@@ -57,7 +59,8 @@
                              [activeDayIsOpen]="activeDayIsOpen()"
                              (dayClicked)="dayClicked($event.day)"
                              (eventClicked)="handleEvent('Clicked', $event.event)"
-                             (eventTimesChanged)="eventTimesChanged($event)">
+                             (eventTimesChanged)="eventTimesChanged($event)"
+                             class="bg-darken-1">
     </mwl-calendar-month-view>
     }
     @case (CalendarView.Week) {
@@ -105,7 +108,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (event of events(); track event.id) {
+          @for (event of events(); track event.title) {
           <tr class="border-t">
             <td class="px-4 py-2 border-b">
               <input type="text"
@@ -125,11 +128,18 @@
                      [(ngModel)]="event.color!.secondary"
                      (ngModelChange)="refresh.next()" />
             </td>
-            <td class="px-4 py-2 border-b">
-              <input class="form-input w-full text-sm"
-                     type="datetime-local"
+            <td>
+              <input class="form-"
+                     type="datetime"
+                     mwlFlatpickr
                      [(ngModel)]="event.start"
-                     (ngModelChange)="refresh.next()" />
+                     (ngModelChange)="refresh.next()"
+                     [altInput]="true"
+                     [convertModelValue]="true"
+                     [enableTime]="true"
+                     dateFormat="Y-m-dTH:i"
+                     altFormat="F j, Y H:i"
+                     placeholder="Not set" />
             </td>
             <td class="px-4 py-2 border-b">
               <input class="form-input w-full text-sm"
@@ -154,32 +164,48 @@
 </div>
 
 <!-- Modal para modificar los eventos -->
+<shared-modal-component />
+
 
 <ng-template #modalContent
-             let-close="close">
-  <div class="modal-header">
-    <h5 class="modal-title">Acción del evento</h5>
-    <button type="button"
-            class="close"
-            (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <div>
-      Acción:
-      <pre>{{ modalData()?.action }}</pre>
+             let-modal>
+  <div class="fixed inset-0 flex items-center justify-center z-50">
+    <!-- Fondo oscuro para el modal -->
+    <div class="fixed inset-0 bg-black opacity-50"
+         (click)="[modal.dismiss(), ]"></div>
+    <!-- Contenedor del modal arrastrable -->
+    <div class="bg-gray-800 text-white rounded-lg shadow-lg relative w-full max-w-xl mx-4 "
+         cdkDrag
+         cdkDragRootElement=".modal-container">
+      <!-- Encabezado del modal -->
+      <div class="flex justify-between items-center p-4 border-b cursor-move"
+           cdkDragHandle>
+        <h5 class="text-lg font-semibold">Acción del evento</h5>
+        <button type="button"
+                class="text-gray-500 hover:text-gray-700"
+                (click)="[modal.dismiss(), ]">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- Cuerpo del modal -->
+      <div class="p-4">
+        <div>
+          Acción:
+          <pre class="bg-gray-100 p-2 text-black rounded">{{ modalData()?.action }}</pre>
+        </div>
+        <div>
+          Evento:
+          <pre class="bg-gray-100 p-2 text-black rounded">{{ modalData()?.event | json }}</pre>
+        </div>
+      </div>
+      <!-- Pie del modal -->
+      <div class="flex justify-end p-4 border-t">
+        <button type="button"
+                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                (click)="modal.close()">
+          OK
+        </button>
+      </div>
     </div>
-    <div>
-      Evento:
-      <pre>{{ modalData()?.event | json }}</pre>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button"
-            class="bg-gray-500 text-white px-2 py-1 rounded"
-            (click)="close()">
-      OK
-    </button>
   </div>
 </ng-template>

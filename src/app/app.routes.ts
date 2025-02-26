@@ -11,7 +11,10 @@ export const routes: Routes = [
       },
       {
         path: 'search',
-        loadComponent: () => import('./gifs/pages/search-page/search-page.component')
+        loadComponent: () => import('./gifs/pages/search-page/search-page.component'),
+        providers: [
+
+        ]
       },
       {
         path: '**',

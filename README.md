@@ -57,3 +57,47 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+# Implementacion de Angular-Calendar en Angular 19+
+
+## Dependecias necesarias (copiar en en package.json e instalar):
+
+    "@ng-bootstrap/ng-bootstrap": "^18.0.0",
+    "@tailwindcss/postcss": "^4.0.8",
+    "angular-calendar": "^0.31.1",
+    "angularx-flatpickr": "^8.1.0",
+    "date-fns": "^4.1.0",
+    "ember-flatpickr": "^8.0.1",
+    "flatpickr": "^4.6.13",
+    "postcss": "^8.5.3",
+    "rxjs": "~7.8.0",
+    "tailwindcss": "^4.0.8",
+    "tslib": "^2.3.0",
+
+## Configurar el [app.cofig.ts] para agregar los necesarios providers:
+
+    import { importProvidersFrom } from '@angular/core';
+    import { CalendarModule, DateAdapter } from 'angular-calendar';
+    import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+    import { provideAnimations } from '@angular/platform-browser/animations';
+    import { provideFlatpickrDefaults } from 'angularx-flatpickr';
+
+    providers: [....,
+        importProvidersFrom(
+          CalendarModule.forRoot({
+            provide: DateAdapter,
+            useFactory: adapterFactory,
+          })
+        ),  
+        provideAnimations(),
+        provideFlatpickrDefaults()
+    ]
+
+## Configurar los estilos generales [styles.css]
+###  Primero siempre ira el css/angular-calendar debido a la naturaleza de su css y que no cause conflicto con las configuración de tailwind (Necesario instalar, seguir documentación)
+
+    @import "../node_modules/angular-calendar/css/angular-calendar.css";
+    @import "tailwindcss";
+
+### Por ultimo copiar el ejemplo del component y probar

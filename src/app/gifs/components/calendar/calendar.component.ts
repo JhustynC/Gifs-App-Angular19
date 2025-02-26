@@ -6,13 +6,17 @@ import {
   signal,
   inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgTemplateOutlet,DOCUMENT  } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { CalendarModule, CalendarView, CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent } from 'angular-calendar';
 import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours } from 'date-fns';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventColor } from 'calendar-utils';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { FlatpickrDirective } from 'angularx-flatpickr';
+import { ModalComponent } from "../../../shared/modal/modal.component";
+import { ModalService } from '../../../shared/modal/service/modal.service';
 
 const colors: Record<string, EventColor> = {
   red: {
@@ -36,14 +40,22 @@ interface ModalData {
 
 @Component({
   selector: 'component-calendar',
-  imports: [CommonModule, FormsModule, CalendarModule, NgbModalModule],
+  imports: [CommonModule, FormsModule, CalendarModule, NgbModalModule, FlatpickrDirective, ModalComponent],
   templateUrl: './calendar.component.html',
+  styleUrl: './calendar.component.css'
 })
 export class CalendarComponent {
-  @ViewChild('modalContent') modalContent!: TemplateRef<any>;
+  @ViewChild('modalContent') modalContent!: TemplateRef<NgTemplateOutlet>;
+
+  modalService = inject(ModalService);
+  // private modalService = inject(NgbModal);
 
   CalendarView = CalendarView
-
+  view = signal<CalendarView>(CalendarView.Month);
+  viewDate = signal<Date>(new Date());
+  modalData = signal<ModalData | null>(null);
+  activeDayIsOpen = signal<boolean>(false);
+  refresh = new Subject<void>();
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fas fa-fw fa-pencil-alt"></i>',
@@ -61,10 +73,6 @@ export class CalendarComponent {
       },
     },
   ];
-
-  view = signal<CalendarView>(CalendarView.Month);
-  viewDate = signal<Date>(new Date());
-  modalData = signal<ModalData | null>(null);
   events = signal<CalendarEvent[]>([
     {
       start: subDays(startOfDay(new Date()), 1),
@@ -105,16 +113,24 @@ export class CalendarComponent {
       draggable: true,
     },
   ]);
-  activeDayIsOpen = signal<boolean>(true);
-  refresh = new Subject<void>();
-
-  private modal = inject(NgbModal);
 
   constructor() {
     effect(() => {
       this.refresh.next();
     });
   }
+
+  private readonly darkThemeClass = 'dark-theme';
+  private document = inject(DOCUMENT);
+
+  ngOnInit(): void {
+    document.body.classList.add(this.darkThemeClass);
+  }
+
+  ngOnDestroy(): void {
+    document.body.classList.remove(this.darkThemeClass);
+  }
+
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate())) {
@@ -125,6 +141,7 @@ export class CalendarComponent {
         this.activeDayIsOpen.set(false);
       } else {
         this.activeDayIsOpen.set(true);
+        console.log(`Seleccione este dia: ${date}`);
       }
       this.viewDate.set(date);
     }
@@ -151,8 +168,15 @@ export class CalendarComponent {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    this.modalData.set({ event, action });
-    this.modal.open(this.modalContent, { size: 'lg' });
+    if(action.includes('Edit')  || action.includes('Delete') ){
+      this.modalService.openModal()
+    //   this.modalData.set({ action: action, event: event });
+    //   this.modalService.open(this.modalContent, {
+    //     animation: true,
+    //     size: 'sm',
+    //     centered: true, // Centra el modal en la pantalla
+    //   });
+    }
   }
 
   addEvent(): void {

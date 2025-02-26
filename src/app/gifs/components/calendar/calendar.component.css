@@ -1,0 +1,47 @@
+:host ::ng-deep .cal-month-view {
+  color: #d1d1d1; /* Color de texto claro */
+  background-color: #237af3; /* Fondo oscuro moderado */
+}
+
+:host ::ng-deep .cal-month-view .cal-day-cell {
+  min-height: 120px; /* Tamaño personalizado */
+  color: #b0b0b0; /* Color de texto predeterminado */
+  background-color: #3a4a63; /* Fondo de los días */
+}
+
+:host ::ng-deep .cal-month-view .cal-day-cell:hover {
+  background-color: #495664; /* Fondo suave al pasar el cursor */
+}
+
+:host ::ng-deep .cal-month-view .cal-day-cell.cal-today {
+  background-color: #e67e22; /* Resaltar el día actual con un tono cálido */
+  color: #ffffff; /* Texto blanco para el día actual */
+}
+
+:host ::ng-deep .cal-month-view .cal-days .cal-cell-row:hover {
+  background-color: #3b4a5a; /* Fondo al pasar el cursor sobre una fila */
+  color: #ecf0f1; /* Texto blanco al pasar el cursor */
+}
+
+:host ::ng-deep .cal-month-view .cal-day-cell.cal-weekend .cal-day-number {
+  color: #f39c12; /* Color suave para los fines de semana */
+}
+
+:host ::ng-deep .cal-month-view .cal-cell.cal-has-events.cal-open {
+  background-color: #1abc9c; /* Color para las celdas con eventos */
+  color: #ffffff; /* Texto blanco para las celdas con eventos */
+}
+
+:host ::ng-deep .cal-month-view .cal-day-cell.cal-selected {
+  background-color: #e67e22; /* Fondo para los días seleccionados */
+  color: #ffffff; /* Texto blanco para los días seleccionados */
+}
+
+:host ::ng-deep .cal-month-view .cal-day-cell.cal-weekend.cal-day-number {
+  color: #f39c12; /* Color suave para los fines de semana */
+}
+
+:host ::ng-deep .cal-month-view .cal-day-cell.cal-out-month .cal-day-number {
+  opacity: 0.6;
+  color: #7f8c8d; /* Color más suave para los días fuera del mes */
+}

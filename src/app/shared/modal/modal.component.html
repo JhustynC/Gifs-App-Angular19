@@ -1,0 +1,37 @@
+@if(modalStatus()){
+<section class="fixed inset-0 flex items-center justify-center z-50 modal-container">
+
+  <!-- Fondo oscuro -->
+  <div class="fixed inset-0 bg-black opacity-50"
+       (click)="closeModal()"></div>
+
+  <!-- Contenedor del modal -->
+  <div class="bg-blue-950 text-white w-1/4 rounded-lg shadow-lg resize overflow-auto max-w-full max-h-full relative "
+       cdkDrag
+       cdkDragBoundary=".modal-container">
+
+    <!-- Sección superior (UP-PART) -->
+    <div class="flex justify-between items-center bg-blue-500 p-3 cursor-move"
+         cdkDragHandle>
+      <!-- Título -->
+      <div class="text-4xl font-semibold">
+        Modal
+      </div>
+      <!-- Botón de cerrar -->
+      <button (click)="closeModal()"
+              class="text-white hover:text-gray-700 text-2xl font-bold">&times;</button>
+    </div>
+
+    <hr class="pb-2">
+
+    <!-- Contenido del modal -->
+    <div class="m-3">
+      <h3 class="text-2xl mb-4">Subtítulo del Modal</h3>
+      <p class="text-xl mb-4">Pariatur minim laboris nisi qui do nisi adipisicing. Sit non ea commodo consequat voluptate est nostrud pariatur consectetur aute ut veniam. Enim
+        cillum sint est laborum. Magna veniam pariatur eu occaecat. Officia labore fugiat sint elit velit tempor laborum sunt ipsum in veniam et.</p>
+    </div>
+
+  </div>
+</section>
+
+}
