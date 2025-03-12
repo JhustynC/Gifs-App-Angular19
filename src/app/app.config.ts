@@ -6,6 +6,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideFlatpickrDefaults } from 'angularx-flatpickr';
 import { importProvidersFrom } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
 
 
 export const appConfig: ApplicationConfig = {
@@ -17,6 +18,7 @@ export const appConfig: ApplicationConfig = {
       })
     ),
     provideAnimations(),
-    provideFlatpickrDefaults()
+    provideFlatpickrDefaults(),
+    provideHttpClient(),
   ]
 };

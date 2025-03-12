@@ -1,6 +1,6 @@
 import { Component, input } from "@angular/core";
 import { ListItemComponent } from "./list-item/list-item.component";
-import { ListItem } from "../../interfaces/list-item.interface";
+import { Gif } from "../../interfaces/gif.interface";
 
 
 @Component({
@@ -10,5 +10,5 @@ import { ListItem } from "../../interfaces/list-item.interface";
 
 })
 export class ListComponent {
-  listItems = input.required<string[]>();
+  listItems = input.required<Gif[]>();
 }

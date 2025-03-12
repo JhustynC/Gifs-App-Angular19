@@ -1,3 +1,41 @@
-<section class="pt-5">
-  <component-list [listItems]="gifsService.imageUrls" />
-</section>
+<!-- <button type="button"
+        class="w-full
+        mx-auto
+        my-4
+        border-2
+        border-amber-500
+        rounded-2xl
+        py-3
+        px-6
+        text-xl
+        font-bold
+        bg-amber-400
+        hover:bg-amber-500
+        transition-colors
+        duration-200
+        text-gray-800
+        shadow-md
+        flex
+        justify-center
+        items-center"
+        (click)="this.refreshGifs()">
+  EXPLORE NEW GIFS</button> -->
+<!-- <section class="pt-5">
+  <component-list [listItems]="gifService.trendingGifs()" />
+</section> -->
+
+<div class="h-screen overflow-y-scroll grid grid-cols-2 md:grid-cols-4 gap-4"
+     (scroll)="onScroll($event)"
+     #scrollDiv>
+  @for (group of gifService.trendingGroupsOf3GifsList(); track $index) {
+  <div class="grid gap-4">
+    @for (gif of group; track gif.id) {
+    <div>
+      <img class="h-full max-w-full rounded-lg"
+           [src]="gif.url"
+           [alt]="gif.title">
+    </div>
+    }
+  </div>
+  }
+</div>
